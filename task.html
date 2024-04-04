@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+    }
+    input[type="text"] {
+        width: calc(100% - 120px);
+        padding: 8px;
+        margin-right: 10px;
+    }
+    button {
+        padding: 8px 15px;
+        cursor: pointer;
+        border-radius: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+    #saveBtn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+    }
+    #fetchBtn {
+        background-color: #008CBA;
+        color: white;
+        border: none;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #f30404;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <input type="text" id="textInput" placeholder="Enter text">
+    <button id="saveBtn">Save</button>
+    <button id="fetchBtn">Fetch</button>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Serial</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+<script>
+    let saveBtn=document.getElementById('saveBtn');
+    saveBtn.addEventListener('click', function() {
+        var inputText = document.getElementById('textInput').value;
+        if (inputText.trim() !== '') {
+            var data = JSON.parse(localStorage.getItem('savedData')) || [];
+            data.push(inputText);
+            localStorage.setItem('savedData', JSON.stringify(data));
+            document.getElementById('textInput').value = '';
+        }
+    });
+
+    let fetchBtn=document.getElementById('fetchBtn')
+    fetchBtn.addEventListener('click', function() {
+        var data = JSON.parse(localStorage.getItem('savedData')) || [];
+        var tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = '';
+        data.forEach(function(item, index) {
+            var row = tableBody.insertRow();
+            var serialCell = row.insertCell(0);
+            var dataCell = row.insertCell(1);
+            serialCell.textContent = index + 1;
+            dataCell.textContent = item;
+        });
+    });
+</script>
+</body>
+</html>
